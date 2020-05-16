@@ -156,8 +156,11 @@ class FaceMasker:
         self._face_img.paste(mask_img, (box_x, box_y), mask_img)
 
     def _save(self):
-        path_splits = os.path.splitext(self.face_path)
-        new_face_path = path_splits[0] + f'-with-{self.color}-mask' + path_splits[1]
+        dirname, filename = os.path.split(self.face_path)
+        base, ext = os.path.splitext(filename)
+        new_base = f"{base}-with-{self.color}-mask"
+        new_face_path = os.path.join(dirname, "masked", new_base+ext)
+        
         self._face_img.save(new_face_path)
         print(f'Save to {new_face_path}')
 
