@@ -54,18 +54,17 @@ def create_mask(image_path, color="blue"):
         mask_path = DEFAULT_IMAGE_PATH
         
     pic_path = image_path
-    show = False
-    model = "hog"
-    FaceMasker(pic_path, mask_path, show, model).mask()
+    FaceMasker(pic_path, mask_path, color=color, show=False, model="hog").mask()
 
 
 
 class FaceMasker:
     KEY_FACIAL_FEATURES = ('nose_bridge', 'chin')
 
-    def __init__(self, face_path, mask_path, show=False, model='hog'):
+    def __init__(self, face_path, mask_path, color="blue", show=False, model='hog'):
         self.face_path = face_path
         self.mask_path = mask_path
+        self.color = color
         self.show = show
         self.model = model
         self._face_img: ImageFile = None
@@ -158,7 +157,7 @@ class FaceMasker:
 
     def _save(self):
         path_splits = os.path.splitext(self.face_path)
-        new_face_path = path_splits[0] + '-with-mask' + path_splits[1]
+        new_face_path = path_splits[0] + f'-with-{self.color}-mask' + path_splits[1]
         self._face_img.save(new_face_path)
         print(f'Save to {new_face_path}')
 
